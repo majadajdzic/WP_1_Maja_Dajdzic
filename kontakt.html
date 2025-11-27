@@ -14,8 +14,6 @@
             const popupOk = document.getElementById("popup-ok");
 
             form.addEventListener("submit", function(event) {
-                event.preventDefault();
-
                 let ime = document.getElementById("ime").value.trim();
                 let prezime = document.getElementById("prezime").value.trim();
                 let email = document.getElementById("email").value.trim();
@@ -27,8 +25,9 @@
                 let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 let telefonRegex = /^[0-9]{9,12}$/;
 
-                let errors = [];
+                let errors = []; // niz za greske
 
+                // frontend validacija
                 if (!ime) errors.push("Unesite ime.");
                 else if (!imePrezimeRegex.test(ime)) errors.push("Ime može sadržavati samo slova.");
 
@@ -45,6 +44,7 @@
 
                 if (!pristanak) errors.push("Prihvatite uslove obrade podataka.");
 
+                // ako postoje greske prikazi 
                 if (errors.length > 0) {
                     popupMessage.innerText = errors.join("\n");
                     popup.style.display = "flex";

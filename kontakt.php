@@ -20,6 +20,7 @@ $telefon = trim($_POST['telefon']);
 $poruka = trim($_POST['poruka']);
 $pristanak = isset($_POST['pristanak']) && $_POST['pristanak'] == 1;
 
+// Backend validacija
 if (empty($ime) || empty($prezime) || empty($email) || empty($telefon) || empty($poruka)) {
     echo "Sva polja moraju biti popunjena!";
     exit;
