@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="utf-8">
+    <title>Kursevi IPI - Kontakt</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <link rel="icon" href="icon/favicon.ico" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("kontaktForm");
+            const popup = document.getElementById("popup");
+            const popupMessage = document.getElementById("popup-message");
+            const popupOk = document.getElementById("popup-ok");
+
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                let ime = document.getElementById("ime").value.trim();
+                let prezime = document.getElementById("prezime").value.trim();
+                let email = document.getElementById("email").value.trim();
+                let telefon = document.getElementById("telefon").value.trim();
+                let poruka = document.getElementById("poruka").value.trim();
+                let pristanak = document.getElementById("pristanak").checked;
+
+                let imePrezimeRegex = /^[A-Za-zčćšđžČĆŠĐŽ ]+$/;
+                let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                let telefonRegex = /^[0-9]{9,12}$/;
+
+                let errors = [];
+
+                if (!ime) errors.push("Unesite ime.");
+                else if (!imePrezimeRegex.test(ime)) errors.push("Ime može sadržavati samo slova.");
+
+                if (!prezime) errors.push("Unesite prezime.");
+                else if (!imePrezimeRegex.test(prezime)) errors.push("Prezime može sadržavati samo slova.");
+
+                if (!email) errors.push("Unesite email.");
+                else if (!emailRegex.test(email)) errors.push("Email nije ispravan.");
+
+                if (!telefon) errors.push("Unesite telefon.");
+                else if (!telefonRegex.test(telefon)) errors.push("Neispravan broj telefona (9-12 cifara).");
+
+                if (!poruka) errors.push("Unesite poruku.");
+
+                if (!pristanak) errors.push("Prihvatite uslove obrade podataka.");
+
+                if (errors.length > 0) {
+                    popupMessage.innerText = errors.join("\n");
+                    popup.style.display = "flex";
+                    return false;
+                }
+                fetch('kontakt.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ ime, prezime, email, telefon, poruka, pristanak: pristanak ? 1 : 0 })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    popupMessage.innerText = data;
+                    popup.style.display = "flex";
+                    form.reset();
+                })
+                .catch(err => {
+                    popupMessage.innerText = "Greška prilikom slanja.";
+                    popup.style.display = "flex";
+                });
+            });
+
+            popupOk.addEventListener("click", () => {
+                popup.style.display = "none";
+            });
+        });
+
+    </script>
+</head>
+<body class="page-contact">
+    <header>
+			<a href="index.html">
+				<img src="slike/logo-ipi.png" alt="Kursevi IPI">
+			</a>
+			<nav>
+				<ul>
+					<li><a href="index.html">O kursevima</a></li>
+					<li><a href="popis.html">Popis kurseva</a></li>
+					<li><a href="raspored.html">Raspored kurseva</a></li>
+					<li class="has-dropdown">
+						<a href="StudentFunZone.html">Student Fun Zone</a>
+						<ul class="dropdown">
+							<li><a href="StudentFunZone.html#bingo">Bingo</a></li>
+							<li><a href="StudentFunZone.html#kviz">Kviz</a></li>
+							<li><a href="StudentFunZone.html#vision">VisualBoard</a></li>
+							<li><a href="StudentFunZone.html#whiteboard">Whiteboard</a></li>
+							<li><a href="StudentFunZone.html#kanban">Kanban Board</a></li>   
+						</ul>
+					</li>
+					<li><a href="kontakt.html">Kontakt</a></li>
+				</ul>
+			</nav>
+		</header>
+
+    <article>
+        <div class="kontakt-card">
+            <div class="kontakt-info">
+                <h3>Kako nas pronaći</h3>
+                <p>Do IPI-ja se može doći javnim gradskim prevozom ili taksijem.</p>
+                <address>
+                    <strong>IPI - Internacionalna poslovno-informaciona akademija</strong><br>
+                    Sveučilišni računski centar<br>
+                    Kulina bana br. 2 (Skver)<br>
+                    75000 Tuzla<br>
+                </address>
+                <p><a href="mailto:info@ipi-akademija.ba">info@ipi-akademija.ba</a> &nbsp;|&nbsp; <a href="tel:+38712345678">+387 12 345 678</a></p>
+                <div class="map-placeholder">
+                    <img src="slike/srce.jpg" alt="Mapa / lokacija" />
+                </div>
+            </div>
+
+            <div class="kontakt-forma">
+                <h3>Pošaljite nam poruku</h3>
+                <form id="kontaktForm" action="kontakt.php" method="post" novalidate onsubmit="return validateForm(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="ime">Ime</label>
+                            <input type="text" id="ime" name="ime" placeholder="Vaše ime" required aria-required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prezime">Prezime</label>
+                            <input type="text" id="prezime" name="prezime" placeholder="Vaše prezime" required aria-required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="name@example.com" required aria-required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefon">Broj telefona</label>
+                            <input type="tel" id="telefon" name="telefon" placeholder="061123456" required aria-required="true">
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="poruka">Poruka</label>
+                            <textarea id="poruka" name="poruka" rows="5" placeholder="Vaša poruka..."></textarea>
+                        </div>
+
+                        <div class="form-group full consent">
+                            <label class="checkbox-inline"><input type="checkbox" id="pristanak" name="pristanak" required> Prihvatam uslove obrade podataka</label>
+                        </div>
+
+                        <div class="form-group full">
+                            <button type="submit" class="primary">Pošalji poruku</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </article>
+
+    <footer>
+        &copy; Internacionalna poslovno-informaciona akademija Tuzla
+    </footer>
+     <!-- Popup za greške -->
+        <div id="popup" class="popup-overlay" style="display:none;">
+            <div class="popup-box">
+                <div id="popup-message"></div>
+                <button id="popup-ok" class="popup-btn">OK</button>
+            </div>
+        </div>
+</body>
+</html>

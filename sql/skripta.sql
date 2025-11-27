@@ -1,0 +1,12 @@
+CREATE DATABASE IF NOT EXISTS kontakt_baza;
+USE kontakt_baza;
+
+CREATE TABLE kontakt_podaci (
+    id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ime VARCHAR(50) NOT NULL,
+    prezime VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefon VARCHAR(15) NOT NULL,
+    poruka TEXT NOT NULL,
+    datum TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+		<link rel="stylesheet" href="css/style_bingo.css" type="text/css">
+        <title>Bingo</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    </head>
+    <body>
+	<div class="content" id="bingo">
+        <h1>BINGO</h1>
+        <div class="button-container" style="margin-bottom:18px;">
+            <button id="randomBtn">Promjeni brojeve</button>
+            <button onclick="generatePDF()">Preuzmi kao PDF</button>
+        </div>
+        <table id="bingoTable" class="bingo-table"></table>
+        <br>
+    </div>
+    <div id="bingoPopup">
+      <div>
+        <h2>Bravo osvojili ste bingo!</h2>
+        <button id="okBtn">OK</button>
+      </div>
+    </div>
+    <script src="js/bingo.js"></script>
+    </body>
+</html>
